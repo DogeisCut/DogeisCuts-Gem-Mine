@@ -10,3 +10,8 @@
 - Saving/Loading
 - Offline progression
 - Fix progression when tabbed out
+- one time use items that can like heal or do other stuff that like lasts a certain amount of time
+- minion regeneration and recover time
+- some sort of notification system or events system for keeping track of things happening, with filters
+- move different things to tabs
+- inventory

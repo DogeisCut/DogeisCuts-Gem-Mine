@@ -30,6 +30,9 @@ const areasDefinitions = {
                         "roomMonstersSlayed": 0,
                         "roomOresGathered": {
                             "quartz": 5000
+                        },
+                        "itemsCrafted": {
+
                         }
                     }
                 ],
@@ -468,6 +471,7 @@ function getRandomOreType(types) {
     return types[0].ore; // Fallback in case of rounding errors
 }
 
+// todo: make ore spawning take the place of broken ores
 function scheduleOres(area) {
     area.oreContents.forEach(oreContent => {
         const baseRate = oreContent.spawnRate.baseValue;
@@ -598,16 +602,19 @@ function htmlUpdate() {
 
     // Update minions display
     // todo: make a panel of info instead of raw text so it's easier to modify minions
+    // probably wanna give minions and ores n stuff numbers so you know which one is being targeted
+    // plus being able to name minions
     const minionsDisplay = document.getElementById('minion-list');
     minionsDisplay.innerHTML = '';
     currentRoom.minions.forEach(minion => {
-        minionsDisplay.innerHTML += `<div>${minion.name}: ${minion.currentHealth} HP, Mining ${minion.currentOre ? minion.currentOre.name : 'None'}, Collecting In ${Math.abs(Math.ceil(gameTime - minion.nextMineTime))} Seconds, Starting next </div>`;
+        minionsDisplay.innerHTML += `<div>${minion.name}: ${minion.currentHealth} HP, Mining ${minion.currentOre ? minion.currentOre.name : 'None'}, Collecting In ${Math.abs(Math.floor(gameTime - minion.nextMineTime))} Seconds, Starting next </div>`;
     });
 
     // Update ores display
+    let availableOres = currentRoom.ores.filter(ore => !ore.isBroken());
     const oresDisplay = document.getElementById('ore-list');
     oresDisplay.innerHTML = '';
-    currentRoom.ores.forEach(ore => {
+    availableOres.forEach(ore => {
         oresDisplay.innerHTML += `<div>${ore.name}: ${ore.hitsUntilTotalBreak-ore.currentHits}/${ore.hitsUntilTotalBreak} Hits</div>`;
     });
 
