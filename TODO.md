@@ -1,0 +1,4 @@
+- Shop, unlocking, buying, and crafting minions/pickaxes
+- Area progression
+- UI
+- Visuals
