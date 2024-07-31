@@ -2,3 +2,6 @@
 - Area progression
 - UI
 - Visuals
+- Organize code into multiple files
+- Favicon
+- Monsters and monster AI (prioritizing )
