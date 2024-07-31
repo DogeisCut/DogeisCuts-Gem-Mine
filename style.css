@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+#container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+#game-area {
+    flex: 2;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+#room-info, #minions, #ores, #monsters {
+    margin-bottom: 20px;
+}
+
+#room-info h2, #minions h3 {
+    margin-bottom: 10px;
+}
+
+#ore-list, #minion-list, #monster-list, #ore-pocket {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#side-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#sell-buttons {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+}
+
+#player-stats, #shop {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#player-stats h3, #shop h3 {
+    margin-bottom: 10px;
+}
+
+#ore-pocket {
+    list-style-type: none;
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+#sell-ores-btn, #sell-selected-ores-btn {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#sell-ores-btn:hover {
+    background-color: #45a049;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

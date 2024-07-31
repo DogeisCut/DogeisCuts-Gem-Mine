@@ -5,10 +5,37 @@ let gameTime = 0;
 
 
 // Definitions
-const areasDefinitions = [
-    {
-        "name": "Quartz Mine 1",
+//todo: convert areas to use an ID system like other definitions, and define the order within the definitions themselves.
+const areasDefinitions = {
+    "quartzMine1": {
+        "id": "quartzMine1",
+        "name": "Quartz Mine I",
         "maxOres": 30,
+        "rewards": [
+            {
+                "cash": 30000,
+                "minions": [
+                    "minionBasic2"
+                ],
+                "pickaxes": [
+
+                ],
+                "areas": [
+                    "quartzMine2"
+                ],
+                "clearArea": true,
+                "requirements": [ // multiple requirements within the array means only one needs to be satisfied.
+                    {
+                        "roomCashEarned": 0,
+                        "roomMonstersSlayed": 0,
+                        "roomOresGathered": {
+                            "quartz": 5000
+                        }
+                    }
+                ],
+            }
+        ],
+        
         "oreContents": [
             {
                 "type": "quartz",
@@ -25,8 +52,8 @@ const areasDefinitions = [
             }
         ],
         "monsterContents": []
-    }
-];
+    },
+};
 
 const oreDefinitions = {
     "quartz": {
@@ -36,7 +63,9 @@ const oreDefinitions = {
         "hitsUntilTotalBreak": {"baseValue": 100, "randomRange": 10},
         "hitDropAmount": {"baseValue": 100, "randomRange": 33},
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
-        "tier": 1
+        "tier": 1,
+        "sellPrice": 0.1,
+        "isOwnOre": true
     },
     "iron": {
         "id": "iron",
@@ -45,7 +74,20 @@ const oreDefinitions = {
         "hitsUntilTotalBreak": {"baseValue": 100, "randomRange": 10},
         "hitDropAmount": {"baseValue": 100, "randomRange": 33},
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
-        "tier": 3
+        "tier": 3,
+        "sellPrice": 0.2,
+        "isOwnOre": true
+    },
+    "ironBig": {
+        "id": "ironBig",
+        "dropId": "iron",
+        "name": "Iron Big",
+        "hitsUntilTotalBreak": {"baseValue": 250, "randomRange": 33},
+        "hitDropAmount": {"baseValue": 200, "randomRange": 55},
+        "breakDropAmount": {"baseValue": 500, "randomRange": 100},
+        "tier": 4,
+        "sellPrice": -1,
+        "isOwnOre": false
     },
     "diamond": {
         "id": "diamond",
@@ -54,7 +96,9 @@ const oreDefinitions = {
         "hitsUntilTotalBreak": {"baseValue": 100, "randomRange": 10},
         "hitDropAmount": {"baseValue": 100, "randomRange": 33},
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
-        "tier": 10
+        "tier": 10,
+        "sellPrice": 23.1,
+        "isOwnOre": true
     }
 }
 
@@ -67,10 +111,25 @@ const pickaxeDefinitions = {
         "mineSpeed": 8.0,
         "tier": 1,
         "softTier": 2,
-        "orePrices": [
-            {"iron": 2250}
+        "craftPrices": [
+            {"iron": 500}
         ],
-        "cashPrice": 6000
+        "purchasePrice": 300, // usually 3 times the sell price of the crafting ingredients
+        "unlockPrice": -1
+    },
+    "ironBasic2": {
+        "id": "ironBasic2",
+        "name": "Iron Picakaxe II",
+        "special": [],
+        "dropMultiplier": 1.01,
+        "mineSpeed": 7.0,
+        "tier": 1,
+        "softTier": 3,
+        "craftPrices": [
+            {"iron": 3250}
+        ],
+        "purchasePrice": 1950,
+        "unlockPrice": 6000
     },
     "devTest": {
         "id": "devTest",
@@ -96,15 +155,35 @@ const pickaxeDefinitions = {
         "mineSpeed": 4.0,
         "tier": 10,
         "softTier": 20,
-        "orePrices": [
+        "craftPrices": [
             {"iron": 2250, "quartz": 3},
             {"diamond": 100}
         ],
-        "cashPrice": 60000
+        "unlockPrice": -1
     }
 }
 
 const minionDefinitions = {
+    "userMinion": { // This minion is used internally for calcuating stats with the player manually mining.
+        "id": "userMinion",
+        "name": "%USER_MINION%",
+        "maxHealth": -1,
+        "dropMultiplier": 1,
+        "damageResistance": 1.0,
+        "critMineChance": 0,
+        "mineSpeedMultiplier": 1,
+        "tierAddition": 0,
+        "softTierAddition": 0,
+        "maxPickaxes": 0,
+        "reactionTime": 0.0,
+        "mineBetweenOresCooldown": 0.0,
+        "baseDamage": 1.0,
+        "startingPickaxes": [],
+        "craftPrices": [
+        ],
+        "unlockPrice": -1,
+        "purchasePrice": -1,
+    },
     "minionBasic1": {
         "id": "minionBasic1",
         "name": "Basic Minion",
@@ -119,7 +198,31 @@ const minionDefinitions = {
         "reactionTime": 1.0,
         "mineBetweenOresCooldown": 1.0,
         "baseDamage": 2.0,
-        "startingPickaxes": ["ironBasic1"]
+        "startingPickaxes": ["ironBasic1"],
+        "craftPrices": [ // crafting or "summoning" minions is not something that will appear at the start of the game
+        ],
+        "unlockPrice": -1,
+        "purchasePrice": 1050,
+    },
+    "minionBasic2": {
+        "id": "minionBasic2",
+        "name": "Basic Minion II",
+        "maxHealth": 101,
+        "dropMultiplier": 1.01,
+        "damageResistance": 0.11,
+        "critMineChance": 0.01,
+        "mineSpeedMultiplier": 1.1,
+        "tierAddition": 0.1,
+        "softTierAddition": 0.1,
+        "maxPickaxes": 1,
+        "reactionTime": 0.9,
+        "mineBetweenOresCooldown": 0.9,
+        "baseDamage": 2.1,
+        "startingPickaxes": ["ironBasic1"],
+        "craftPrices": [
+        ],
+        "unlockPrice": -1,
+        "purchasePrice": 1350,
     }
 }
 
@@ -253,6 +356,15 @@ function addOrMakeOre(oreId, amount) {
     } else {
         orePocket[oreId] += amount
     }
+    if (!areaStats[currentRoom.id].roomOresGathered[oreId]) {
+        areaStats[currentRoom.id].roomOresGathered[oreId] = amount
+    } else {
+        areaStats[currentRoom.id].roomOresGathered[oreId] += amount
+    }
+}
+
+function calculateRandomRangeValue({ baseValue, randomRange }) {
+    return baseValue + Math.floor(Math.random() * randomRange) - Math.round(randomRange/2);
 }
 
 class Ore {
@@ -260,15 +372,15 @@ class Ore {
         this.id = definition.id
         this.dropId = definition.dropId
         this.name = definition.name;
-        this.hitsUntilTotalBreak = this.calculateValue(definition.hitsUntilTotalBreak);
-        this.breakDropAmount = this.calculateValue(definition.breakDropAmount);
+        this.hitsUntilTotalBreak = calculateRandomRangeValue(definition.hitsUntilTotalBreak);
+        this.breakDropAmount = calculateRandomRangeValue(definition.breakDropAmount);
         this.hitDropAmount = definition.hitDropAmount;
         
         this.currentHits = 0;
     }
 
     calculateValue({ baseValue, randomRange }) {
-        return baseValue + Math.floor(Math.random() * randomRange) - randomRange/2;
+        return baseValue + Math.floor(Math.random() * randomRange) - Math.round(randomRange/2);
     }
 
     hit(pickaxe, minion) {
@@ -276,7 +388,7 @@ class Ore {
 
             this.currentHits += 1;
 
-            let finalDropAmount = this.isBroken() ? this.breakDropAmount : this.calculateValue(this.hitDropAmount);
+            let finalDropAmount = this.isBroken() ? this.breakDropAmount : calculateRandomRangeValue(this.hitDropAmount);
 
             const pickDef = pickaxeDefinitions[pickaxe]
             const minionDef = minionDefinitions[minion]
@@ -387,6 +499,16 @@ function scheduleOres(area) {
     });
 }
 
+function sellOre(id) {
+    if (orePocket[id]) {
+        cash += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice);
+        areaStats[currentRoom.id].roomCashEarned += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice)
+        orePocket[id] = 0;
+        return true;
+    }
+    return false;
+}
+
 class Monster {
     constructor(name, health) {
         this.name = name;
@@ -400,21 +522,36 @@ const orePocket = {
 }; //ores are in grams
 
 const currentRoom = {
-    id: -1,
+    id: 'none',
     ores: [],
     monsters: [],
-    minions: []
+    minions: [],
 };
 
-function calculateTotalOres(oreCount) {
-    return oreCount.baseValue + Math.floor(Math.random() * oreCount.randomRange) - oreCount.randomRange/2;
+const areaStats = { // tracks the stats for each area for requirements and rewards
+
 }
 
-function makeRoom(index) {
-    const area = areasDefinitions[index];
+const unlocks = {
+    pickaxes: [
+        "ironBasic1"
+    ],
+    minions: [
+        "minionBasic1"
+    ],
+    areas: [
+        "quartzMine1"
+    ]
+}
+
+let userPickaxe = "ironBasic1";
+//ore.hit(userPickaxe, "userMinion")
+
+function makeRoom(id) {
+    const area = areasDefinitions[id];
     if (!area) { return; }
 
-    currentRoom.id = index;
+    currentRoom.id = id;
     currentRoom.ores = [];
     currentRoom.monsters = [];
 
@@ -431,13 +568,59 @@ function update() {
             minion.startMining();
         }
     });
+    htmlUpdate();
+}
+
+function makeAreaStats() {
+    for (const areaId in areasDefinitions) {
+        areaStats[areaId] = {
+            roomCashEarned: 0,
+            roomMonstersSlayed: 0,
+            roomOresGathered: {
+            }
+        }
+    }
+}
+
+function htmlUpdate() {
+    // Update cash display
+    document.getElementById('player-cash').innerText = `${cash}`;
+
+    // Update ore pocket display
+    const orePocketDisplay = document.getElementById('ore-pocket');
+    orePocketDisplay.innerHTML = '';
+    for (const oreId in orePocket) {
+        const amount = orePocket[oreId];
+        if (amount > 0) {
+            orePocketDisplay.innerHTML += `<div>${oreDefinitions[oreId].name}: ${amount}</div>`;
+        }
+    }
+
+    // Update minions display
+    // todo: make a panel of info instead of raw text so it's easier to modify minions
+    const minionsDisplay = document.getElementById('minion-list');
+    minionsDisplay.innerHTML = '';
+    currentRoom.minions.forEach(minion => {
+        minionsDisplay.innerHTML += `<div>${minion.name}: ${minion.currentHealth} HP, Mining ${minion.currentOre ? minion.currentOre.name : 'None'}, Collecting In ${Math.abs(Math.ceil(gameTime - minion.nextMineTime))} Seconds, Starting next </div>`;
+    });
+
+    // Update ores display
+    const oresDisplay = document.getElementById('ore-list');
+    oresDisplay.innerHTML = '';
+    currentRoom.ores.forEach(ore => {
+        oresDisplay.innerHTML += `<div>${ore.name}: ${ore.hitsUntilTotalBreak-ore.currentHits}/${ore.hitsUntilTotalBreak} Hits</div>`;
+    });
+
+    // Optionally, update any other UI elements here
 }
 
 function loadGame() {
+    makeAreaStats()
+    verifyDefinitions(areasDefinitions);
     verifyDefinitions(oreDefinitions);
     verifyDefinitions(minionDefinitions);
     verifyDefinitions(pickaxeDefinitions);
-    makeRoom(0);
+    makeRoom('quartzMine1');
     setInterval(update, TICK_INTERVAL);
 }
 

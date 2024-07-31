@@ -7,3 +7,6 @@
 - Monsters and monster AI (prioritizing )
 - Specials for ores themselves that can change their drop rates and such depending on vairous things (such as pickaxe or minion)
 - Handle multiple pickaxes for minions
+- Saving/Loading
+- Offline progression
+- Fix progression when tabbed out
