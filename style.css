@@ -31,7 +31,7 @@ h1 {
     margin: auto;
 }
 
-#game-area {
+#game-area, .panel {
     flex: 2;
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -63,7 +63,7 @@ h1 {
     gap: 20px;
 }
 
-#sell-buttons {
+#sell-buttons, .button-row {
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -88,7 +88,7 @@ h1 {
     padding-left: 20px;
 }
 
-#sell-ores-btn, #sell-selected-ores-btn {
+#sell-ores-btn, #sell-selected-ores-btn, .generic-button, .submenu-button {
     display: block;
     margin: 10px 0;
     padding: 10px;
@@ -99,8 +99,16 @@ h1 {
     cursor: pointer;
 }
 
-#sell-ores-btn:hover {
+.submenu-button {
+    background-color: #4c7faf;
+}
+
+#sell-ores-btn:hover, #sell-selected-ores-btn:hover, .generic-button:hover {
     background-color: #45a049;
+}
+
+.submenu-button:hover {
+    background-color: #456ca0;
 }
 
 footer {
@@ -111,4 +119,26 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse; 
+    text-align: left; 
+    vertical-align: middle;
+}
+
+table td, table th {
+    height: 100%;
+    vertical-align: middle; 
+}
+
+table, th, td {
+    border: 1px solid #ddd; 
+}
+
+table {
+    margin: 0;
+    padding: 0;
 }

@@ -31,7 +31,7 @@ const areasDefinitions = {
                         "roomOresGathered": {
                             "quartz": 5000
                         },
-                        "itemsCrafted": {
+                        "roomItemsCrafted": {
 
                         }
                     }
@@ -63,12 +63,12 @@ const oreDefinitions = {
         "id": "quartz",
         "dropId": "quartz",
         "name": "Quartz",
-        "hitsUntilTotalBreak": {"baseValue": 100, "randomRange": 10},
+        "hitsUntilTotalBreak": {"baseValue": 25, "randomRange": 8},
         "hitDropAmount": {"baseValue": 100, "randomRange": 33},
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
         "tier": 1,
         "sellPrice": 0.1,
-        "isOwnOre": true
+        "isDerivative": false
     },
     "iron": {
         "id": "iron",
@@ -79,7 +79,7 @@ const oreDefinitions = {
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
         "tier": 3,
         "sellPrice": 0.2,
-        "isOwnOre": true
+        "isDerivative": false
     },
     "ironBig": {
         "id": "ironBig",
@@ -90,7 +90,7 @@ const oreDefinitions = {
         "breakDropAmount": {"baseValue": 500, "randomRange": 100},
         "tier": 4,
         "sellPrice": -1,
-        "isOwnOre": false
+        "isDerivative": true
     },
     "diamond": {
         "id": "diamond",
@@ -101,8 +101,19 @@ const oreDefinitions = {
         "breakDropAmount": {"baseValue": 250, "randomRange": 50},
         "tier": 10,
         "sellPrice": 23.1,
-        "isOwnOre": true
-    }
+        "isDerivative": false
+    },
+    "piss": {
+        "id": "piss",
+        "dropId": "piss",
+        "name": "Piss",
+        "hitsUntilTotalBreak": {"baseValue": 1, "randomRange": 0},
+        "hitDropAmount": {"baseValue": 100000, "randomRange": 0},
+        "breakDropAmount": {"baseValue": 100000, "randomRange": 0},
+        "tier": 69,
+        "sellPrice": 1000000.0,
+        "isDerivative": false
+    },
 }
 
 const pickaxeDefinitions = {
@@ -266,6 +277,7 @@ class Minion {
         this.currentOre = null;
         this.nextMineTime = 0;
         this.nextOreTime = 0;
+        this.status = "idle";
 
         this.avoidSameOre = options.avoidSameOre !== false;
         this.maxTierPreference = options.maxTierPreference !== false;
@@ -288,6 +300,7 @@ class Minion {
                 
                 if (this.currentOre.isBroken()) {
                     this.nextOreTime = currentTime + this.mineBetweenOresCooldown;
+                    this.status = 'cooldown';
                     this.currentOre = null; // Reset current ore after it's broken
                 }
             }
@@ -304,6 +317,7 @@ class Minion {
         if (availableOres.length === 0) {
             // No ores available to mine
             //console.log(`${this.name} found no ores to mine.`);
+            this.status = 'idle';
             return;
         }
 
@@ -330,6 +344,7 @@ class Minion {
             return highestOre;
         }, null);
 
+        this.status = 'mining';
         console.log(`${this.name} started mining ${this.currentOre.name}.`);
         this.nextMineTime = gameTime + (this.mineSpeedMultiplier * pickaxeDefinitions[this.pickaxes[0]].mineSpeed);
     }
@@ -586,6 +601,14 @@ function makeAreaStats() {
     }
 }
 
+const minionStatusTranslations = {
+    en: {
+        idle: 'Idle',
+        mining: 'Mining',
+        cooldown: 'Looking For Ore'
+    }
+}
+
 function htmlUpdate() {
     // Update cash display
     document.getElementById('player-cash').innerText = `${cash}`;
@@ -604,10 +627,48 @@ function htmlUpdate() {
     // todo: make a panel of info instead of raw text so it's easier to modify minions
     // probably wanna give minions and ores n stuff numbers so you know which one is being targeted
     // plus being able to name minions
+    // probably wanna make timers into bars instead of numbers (or perhaps both)
     const minionsDisplay = document.getElementById('minion-list');
     minionsDisplay.innerHTML = '';
     currentRoom.minions.forEach(minion => {
-        minionsDisplay.innerHTML += `<div>${minion.name}: ${minion.currentHealth} HP, Mining ${minion.currentOre ? minion.currentOre.name : 'None'}, Collecting In ${Math.abs(Math.floor(gameTime - minion.nextMineTime))} Seconds, Starting next </div>`;
+        minionsDisplay.innerHTML += `
+        <div class="panel">
+        <table><thead>
+        <tr>
+            <th>Name:</th>
+            <th>${minion.name}</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+            <td>Type:</td>
+            <td>${minionDefinitions[minion.id].name}</td>
+        </tr>
+        <tr>
+            <td>Health:</td>
+            <td>${minion.currentHealth}/${minion.maxHealth} HP</td>
+        </tr>
+        <tr>
+            <td>Target:</td>
+            <td>${minion.currentOre ? minion.currentOre.name : 'None'}</td>
+        </tr>
+        <tr>
+            <td>Status:</td>
+            <td>${minionStatusTranslations.en[minion.status]}</td> 
+        </tr>
+        <tr>
+            <td>Status Timer:</td>
+            <td><progress value="${Math.abs(gameTime - minion.nextMineTime)}" max="8"></progress> ${Math.abs(gameTime - minion.nextMineTime).toFixed(1)} Seconds</td> 
+        </tr>
+        </tbody>
+        </table>
+        <div class="button-row">
+            <button type="button" class="submenu-button">Pickaxes ⋮ </button>
+            <button type="button" class="submenu-button">Items ⋮ </button>
+            <button type="button" class="submenu-button">Behavior ⋮ </button>
+            <button type="button" class="submenu-button">Stats ⋮ </button>
+            <button type="button" class="generic-button">Sell Minion (\$${minionDefinitions[minion.id].purchasePrice*0.80/(minion.currentHealth/minion.maxHealth)})</button>
+        </div>
+        </div>`;
     });
 
     // Update ores display
@@ -615,7 +676,11 @@ function htmlUpdate() {
     const oresDisplay = document.getElementById('ore-list');
     oresDisplay.innerHTML = '';
     availableOres.forEach(ore => {
-        oresDisplay.innerHTML += `<div>${ore.name}: ${ore.hitsUntilTotalBreak-ore.currentHits}/${ore.hitsUntilTotalBreak} Hits</div>`;
+        oresDisplay.innerHTML += `
+        <div class="panel">
+            ${ore.name}: ${ore.hitsUntilTotalBreak-ore.currentHits}/${ore.hitsUntilTotalBreak} Hits
+        </div>
+        `;
     });
 
     // Optionally, update any other UI elements here
