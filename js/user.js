@@ -39,7 +39,7 @@ function sellOreOfType(id, percentage) {
         const cashEarned = Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice * percentage)
         cash += cashEarned;
         areaStats[currentRoom.id].roomCashEarned += cashEarned
-        orePocket[id] = orePocket[id] * (1-percentage);
+        orePocket[id] = Math.floor(orePocket[id] * (1-percentage)); //losses will occur
         new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${cashEarned}!`, 3, "action", ["playerAction"]);
         return true;
     }
