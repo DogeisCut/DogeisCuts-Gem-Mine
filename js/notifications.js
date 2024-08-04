@@ -23,7 +23,7 @@ class Notification {
         return;
       }
 
-    const index = notifications.indexOf(undefined);
+    const index = notifications.indexOf(null);
     if (index !== -1) {
       notifications[index] = this;
       this.index = index;
@@ -63,7 +63,7 @@ class Notification {
 
     setTimeout(() => {
       this.alive = false;
-      notifications[this.index] = undefined;
+      notifications[this.index] = null;
     }, this.life * 1000);
   }
 }
