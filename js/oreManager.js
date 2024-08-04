@@ -26,7 +26,7 @@ function scheduleOres(area) {
                 const nonBrokenOres = currentRoom.ores.filter(ore => !ore.isBroken());
                 if (nonBrokenOres.length < area.maxOres) {
                     currentRoom.ores.push(new Ore(oreDefinition));
-                    new Notification(`${oreDefinition.name} spawned in the room.`, 3, "tooFrequent");
+                    new Notification(`${oreDefinition.name} spawned in the room.`, 3, "tooFrequent", ["ore"]);
                 }
             } else {
                 const oreDefinition = oreDefinitions[oreContent.type];
@@ -35,7 +35,7 @@ function scheduleOres(area) {
                 const nonBrokenOres = currentRoom.ores.filter(ore => !ore.isBroken());
                 if (nonBrokenOres.length < area.maxOres) {
                     currentRoom.ores.push(new Ore(oreDefinition));
-                    new Notification(`${oreDefinition.name} spawned in the room.`, 3, "tooFrequent");
+                    new Notification(`${oreDefinition.name} spawned in the room.`, 3, "tooFrequent", ["ore"]);
                 }
             }
         }, spawnInterval * 1000); // Convert to milliseconds

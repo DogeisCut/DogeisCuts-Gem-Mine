@@ -30,7 +30,7 @@ function sellOreOfType(id) {
         cash += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice);
         areaStats[currentRoom.id].roomCashEarned += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice)
         orePocket[id] = 0;
-        new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${oreDefinitions[id].sellPrice}!`, 3, "action");
+        new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${oreDefinitions[id].sellPrice}!`, 3, "action", ["playerAction"]);
         return true;
     }
     return false;
@@ -45,10 +45,10 @@ function sellMinion(index) {
             const minion = currentRoom.minions[index]
             const sellPrice = minionDefinitions[minion.id].purchasePrice*0.80/(minion.currentHealth/minion.maxHealth)
             cash += sellPrice
-            new Notification(`Sold minion '${minion.name}' for \$${sellPrice}!`, 3, "action");
+            new Notification(`Sold minion '${minion.name}' for \$${sellPrice}!`, 3, "action", ["playerAction"]);
             currentRoom.minions.splice(index, 1)
         return true;
     }
-    new Notification(`Cannot sell your only minion!`, 3, "error");
+    new Notification(`Cannot sell your only minion!`, 3, "error", ["playerAction"]);
     return false;
 }

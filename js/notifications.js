@@ -12,16 +12,17 @@ const notificationFilter = {
 const notifications = [];
 
 class Notification {
-  constructor(content = "This is a notification.", life = 3, type = "generic") {
+  constructor(content = "This is a notification.", life = 3, type = "generic", tags = []) {
     this.content = content;
     this.life = life; // assuming life is a number representing seconds
     this.type = type;
+    this.tags = tags; // for filtering
 
     this.alive = true;
 
     if (notificationFilter[this.type]) {
-        return;
-      }
+      return;
+    }
 
     const index = notifications.indexOf(null);
     if (index !== -1) {

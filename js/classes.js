@@ -83,7 +83,7 @@ class Minion {
         }, null);
 
         this.status = 'mining';
-        new Notification(`${this.name} started mining ${this.currentOre.name}.`, 3, "frequent");
+        new Notification(`${this.name} started mining ${this.currentOre.name}.`, 3, "frequent", ["minionAction"]);
         this.nextMineTime = gameTime + (this.mineSpeedMultiplier * pickaxeDefinitions[this.pickaxes[0]].mineSpeed);
     }
 
@@ -98,7 +98,7 @@ class Minion {
     takeDamage(amount) {
         const damageTaken = amount * (1 - this.damageResistance);
         this.currentHealth -= damageTaken;
-        new Notification(`${this.name} took ${damageTaken} damage! Current health: ${this.currentHealth}.`, 3, "frequentWarning");
+        new Notification(`${this.name} took ${damageTaken} damage! Current health: ${this.currentHealth}.`, 3, "frequentWarning", ["minionAction"]);
     }
 
     isAlive() {
@@ -172,7 +172,7 @@ class Ore {
 
             if (minion && Math.random() < minionDef.critMineChance) {
                 finalDropAmount *= 2; // Double the drop amount on crit
-                new Notification(`${minionDef.name} scored a critical hit!`, 3, "frequent");
+                new Notification(`${minionDef.name} scored a critical hit!`, 3, "frequent", ["minionAction"]);
             }
 
             // Calculate Effective Ore Tier
@@ -189,9 +189,9 @@ class Ore {
             finalDropAmount = finalDropAmount / tierRatio;
 
             if (this.isBroken()) {
-                new Notification(`${this.name} is broken! Dropped ${finalDropAmount} units.`, 3, "frequent");
+                new Notification(`${this.name} is broken! Dropped ${finalDropAmount} units.`, 3, "frequent", ["minionAction", "ore"]);
             } else {
-                new Notification(`${this.name} hit! Dropped ${finalDropAmount} units.`, 3, "frequent");
+                new Notification(`${this.name} hit! Dropped ${finalDropAmount} units.`, 3, "frequent", ["minionAction", "ore"]);
             }
             addOrMakeOre(this.dropId, finalDropAmount);
     }

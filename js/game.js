@@ -14,7 +14,7 @@ function makeRoom(id) {
     currentRoom.monsters = [];
 
     scheduleOres(area);
-    new Notification(`Entered room ${area.name}!`, 3, "action")
+    new Notification(`Entered room ${area.name}!`, 3, "action", ["playerAction"])
     console.log();
 }
 
