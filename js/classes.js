@@ -98,7 +98,7 @@ class Minion {
     takeDamage(amount) {
         const damageTaken = amount * (1 - this.damageResistance);
         this.currentHealth -= damageTaken;
-        new Notification(`${this.name} took ${damageTaken} damage! Current health: ${this.currentHealth}`, 3, "frequentWarning");
+        new Notification(`${this.name} took ${damageTaken} damage! Current health: ${this.currentHealth}.`, 3, "frequentWarning");
     }
 
     isAlive() {

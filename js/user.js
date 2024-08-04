@@ -37,8 +37,11 @@ function sellOreOfType(id) {
 }
 
 function sellMinion(index) {
-    if (index>currentRoom.minions.length-1){return false;}
-    if (currentRoom.minions.length >= 1) {
+    if (index>currentRoom.minions.length-1) {
+        new Notification(`You cannot sell a minion that doesn't exist!`, 3, "error");
+        return false;
+    }
+    if (currentRoom.minions.length > 1) {
             const minion = currentRoom.minions[index]
             const sellPrice = minionDefinitions[minion.id].purchasePrice*0.80/(minion.currentHealth/minion.maxHealth)
             cash += sellPrice
@@ -46,5 +49,6 @@ function sellMinion(index) {
             currentRoom.minions.splice(index, 1)
         return true;
     }
+    new Notification(`Cannot sell your only minion!`, 3, "error");
     return false;
 }

@@ -241,5 +241,5 @@ function verifyDefinitions(definitions) {
             }
         }
     }
-    console.log("All definitions verified successfully.");
+    //console.log("All definitions verified successfully.");
 }
