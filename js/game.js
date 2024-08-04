@@ -68,6 +68,9 @@ function htmlUpdate() {
     // probably wanna give minions and ores n stuff numbers so you know which one is being targeted
     // plus being able to name minions
     // probably wanna make timers into bars instead of numbers (or perhaps both)
+
+    // i really gotta figure this out
+    // i dont think a status system is gonna work here. i may need multiple bars.
     const minionsDisplay = document.getElementById('minion-list');
     minionsDisplay.innerHTML = '';
     currentRoom.minions.forEach(minion => {
@@ -97,7 +100,7 @@ function htmlUpdate() {
         </tr>
         <tr>
             <td>Status Timer:</td>
-            <td><progress value="${Math.abs(gameTime - minion.nextMineTime)}" max="8"></progress> ${Math.abs(gameTime - minion.nextMineTime).toFixed(1)} Seconds</td> 
+            <td><progress value="${-Math.abs(minion.nextMineTime - gameTime) + 8}" max="${8}"></progress> ${Math.abs(gameTime - minion.nextMineTime).toFixed(1)} Seconds</td> 
         </tr>
         </tbody>
         </table>
