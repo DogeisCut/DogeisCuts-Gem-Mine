@@ -140,7 +140,7 @@ class Ore {
     }
 
     hit(pickaxe, minion) {
-        if (this.isBroken() && !canMineThisOre(pickaxe, minion)) { return; } // failsafe
+        if (this.isBroken() || !this.canMineThisOre(pickaxe, minion)) { return; } // failsafe
 
             this.currentHits += 1;
 

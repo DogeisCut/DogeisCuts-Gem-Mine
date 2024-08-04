@@ -23,21 +23,31 @@ const unlocks = {
 }
 
 let userPickaxe = "ironBasic1";
-//ore.hit(userPickaxe, "userMinion")
 
-function sellOreOfType(id) {
+function mineOreByIndex(index) {
+    if (index>currentRoom.ores.length-1 || index < 0) {
+        new Notification(`You cannot mine ore that doesn't exist!`, 3, "error");
+        return false;
+    }
+    currentRoom.ores[index].hit(userPickaxe, "userMinion")
+    return true;
+}
+
+function sellOreOfType(id, percentage) {
+    if (percentage>1||percentage<0){return false;}
     if (orePocket[id]) {
-        cash += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice);
-        areaStats[currentRoom.id].roomCashEarned += Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice)
-        orePocket[id] = 0;
-        new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${oreDefinitions[id].sellPrice}!`, 3, "action", ["playerAction"]);
+        const cashEarned = Math.ceil(orePocket[id] * oreDefinitions[id].sellPrice * percentage)
+        cash += cashEarned;
+        areaStats[currentRoom.id].roomCashEarned += cashEarned
+        orePocket[id] = orePocket[id] * (1-percentage);
+        new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${cashEarned}!`, 3, "action", ["playerAction"]);
         return true;
     }
     return false;
 }
 
 function sellMinion(index) {
-    if (index>currentRoom.minions.length-1) {
+    if (index>currentRoom.minions.length-1 || index < 0) {
         new Notification(`You cannot sell a minion that doesn't exist!`, 3, "error");
         return false;
     }
