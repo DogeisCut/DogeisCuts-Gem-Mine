@@ -1,17 +1,22 @@
-- Shop, unlocking, buying, and crafting minions/pickaxes
-- Area progression
-- UI
-- Visuals
-- Organize code into multiple files
-- Favicon
-- Monsters and monster AI (prioritizing )
-- Specials for ores themselves that can change their drop rates and such depending on vairous things (such as pickaxe or minion)
-- Handle multiple pickaxes for minions
-- Saving/Loading
-- Offline progression
-- Fix progression when tabbed out
-- one time use items that can like heal or do other stuff that like lasts a certain amount of time
-- minion regeneration and recover time
-- some sort of notification system or events system for keeping track of things happening, with filters
-- move different things to tabs
-- inventory
+- [ ] Shop, unlocking, buying, and crafting minions/pickaxes
+- [ ] Area progression
+- [ ] UI
+- [ ] Visuals
+- [X] Organize code into multiple files
+ - [ ] More needs to be done IMO
+- [X] Favicon
+- [ ] Monsters and monster AI (prioritizing certain minions with certain picks, etc)
+- [ ] Specials for ores themselves that can change their drop rates and such depending on vairous things (such as pickaxe or minion)
+- [ ] Handle multiple pickaxes for minions
+- [ ] Saving/Loading
+- [ ] Offline progression
+- [ ] Fix progression when tabbed out
+- [ ] one time use items that can like heal or do other stuff that like lasts a certain amount of time
+- [ ] minion regeneration and recover time
+- [X] some sort of notification system or events system for keeping track of things happening, with filters
+ - [ ] Make them visual
+ - [ ] Notif hoistory
+ - [ ] Tag filters
+- [ ] move different things to tabs
+- [ ] inventory
+- [ ] enums instead of strings in many places

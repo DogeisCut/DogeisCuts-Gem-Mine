@@ -135,10 +135,6 @@ class Ore {
         this.currentHits = 0;
     }
 
-    calculateValue({ baseValue, randomRange }) {
-        return baseValue + Math.floor(Math.random() * randomRange) - Math.round(randomRange/2);
-    }
-
     hit(pickaxe, minion) {
         if (this.isBroken() || !this.canMineThisOre(pickaxe, minion)) { return; } // failsafe
 

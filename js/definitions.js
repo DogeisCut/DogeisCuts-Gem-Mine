@@ -165,6 +165,7 @@ const pickaxeDefinitions = {
             {"iron": 2250, "quartz": 3},
             {"diamond": 100}
         ],
+        "purchasePrice": -1,
         "unlockPrice": -1
     }
 }

@@ -40,7 +40,7 @@ function sellOreOfType(id, percentage) {
         cash += cashEarned;
         areaStats[currentRoom.id].roomCashEarned += cashEarned
         orePocket[id] = Math.floor(orePocket[id] * (1-percentage)); //losses will occur
-        new Notification(`Sold ore '${oreDefinitions[id].name}' for \$${cashEarned}!`, 3, "action", ["playerAction"]);
+        new Notification(`Sold ${percentage*100}% of ore '${oreDefinitions[id].name}' for \$${cashEarned}!`, 3, "action", ["playerAction"]);
         return true;
     }
     return false;
@@ -61,4 +61,20 @@ function sellMinion(index) {
     }
     new Notification(`Cannot sell your only minion!`, 3, "error", ["playerAction"]);
     return false;
+}
+
+function craftThing(id, definition) {
+
+}
+
+function unlockThing(id, definition) {
+
+}
+
+function buyThing(id, definition) {
+
+}
+
+function moveToArea(id) {
+    
 }
