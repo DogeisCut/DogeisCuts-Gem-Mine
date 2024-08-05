@@ -14,9 +14,9 @@
 - [ ] one time use items that can like heal or do other stuff that like lasts a certain amount of time
 - [ ] minion regeneration and recover time
 - [X] some sort of notification system or events system for keeping track of things happening, with filters
- - [ ] Make them visual
- - [ ] Notif hoistory
- - [ ] Tag filters
+  - [ ] Make them visual
+  - [ ] Notif hoistory
+  - [ ] Tag filters
 - [ ] move different things to tabs
 - [ ] inventory
 - [ ] enums instead of strings in many places
