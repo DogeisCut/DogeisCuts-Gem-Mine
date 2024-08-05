@@ -3,7 +3,7 @@
 - [ ] UI
 - [ ] Visuals
 - [X] Organize code into multiple files
- - [ ] More needs to be done IMO
+  - [ ] More needs to be done IMO
 - [X] Favicon
 - [ ] Monsters and monster AI (prioritizing certain minions with certain picks, etc)
 - [ ] Specials for ores themselves that can change their drop rates and such depending on vairous things (such as pickaxe or minion)
